@@ -1,0 +1,22 @@
+/*
+* @Author: EvsChen
+* @Date:   2017-02-27 00:12:39
+* @Last Modified by:   EvsChen
+* @Last Modified time: 2017-02-27 14:08:47
+*/
+#prompt {
+	color: #7c7d7f;
+	font-size: 0.8em;
+}
+#inputBox {
+	border: 1px solid #7c7d7f;
+	border-radius: 2px;
+}
+#property {
+	width: 50px;
+	display: inline-block;
+	vertical-align: top;
+}
+#content {
+	display: inline-block;
+}
