@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Baidu IFE</title>
+
+</head>
+<body>
+    <div>Keyword <input id="keyword" type="text"><button onclick="sendReq()" type="submit">Submit</button></div>
+    <div>UserAgent <select id="useragent">
+        <option value="iphone5">iPhone5</option>
+        <option value="iphone6">iPhone6</option>
+        <option value="ipad">iPad</option>
+    </select></div>
+    <form id="result"></form>
+    <script type="text/javascript">
+        function sendReq() {
+            console.log("Button pressed");
+            var select = document.getElementById("useragent");
+            var ua = select.options[select.selectedIndex].value;
+            var keyword = document.getElementById('keyword').value;
+            var url = "./?word="+keyword+"&device="+ua;
+            var resultDiv = document.getElementById("result");
+            var oReq = new XMLHttpRequest();
+            oReq.onreadystatechange = function() {
+                if (oReq.readyState === 4){
+                    if (oReq.status === 200){
+                        var resultObj = JSON.parse(oReq.responseText);
+                        loadResult(resultObj);
+                    } else {
+                        console.error(oReq.statusText);
+                    }
+                }
+            };
+            oReq.onerror = function(e) {
+                console.log("Oops, error", e);
+            };
+            oReq.open('get',url, true);
+            oReq.send();
+        }
+        function loadResult(obj){
+            var form = document.getElementById("result");
+            form.innerHTML +=
+                    `<p>Keyword: ${obj.word}</p>
+                     <p>Device: ${obj.device}</p>`
+            for (let i in obj.datalist){
+                let result  = obj.datalist[i];
+                if (result.pic) {
+//                    var imgReq = new XMLHttpRequest();
+//                    imgReq.onreadystatechange = function() {
+//                        if (imgReq.readyState === 4){
+//                            if (imgReq.status === 200){
+//                                var resultObj = JSON.parse(oReq.responseText);
+//                            } else {
+//                                console.error(imgReq.statusText);
+//                            }
+//                        }
+//                    };
+//                    imgReq.onerror = function(e) {
+//                        console.log("Oops, error", e);
+//                    };
+//                    imgReq.open('get',url, true);
+//                    imgReq.send();
+                    form.innerHTML += `<img src="http://localhost:8888/${i}.png">`;
+                }
+                form.innerHTML += `<a href="${result.link}">${result.title}</a>
+                                   <p>${result.info}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
+
